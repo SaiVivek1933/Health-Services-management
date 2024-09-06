@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Appointment Booking</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Book an Appointment</h1>
+        <form id="appointmentForm" action="book_appointment.php" method="POST">
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="doctor">Select Doctor:</label>
+                <select id="doctor" name="doctor" required>
+                    <option value="" disabled selected>Select a doctor</option>
+                    <option value="1">Dr. Smith</option>
+                    <option value="2">Dr. Johnson</option>
+                    <option value="3">Dr. Williams</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="date">Preferred Date:</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+            <div class="form-group">
+                <label for="time">Available Time Slots:</label>
+                <select id="time" name="time" required>
+                    <option value="" disabled selected>Select a time slot</option>
+                </select>
+            </div>
+            <button type="submit">Book Appointment</button>
+        </form>
+    </div>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    
+    .container {
+        max-width: 600px;
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #555;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select,
+    input[type="date"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    button[type="submit"] {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+    </style>
+    <script>
+        const doctorSelect = document.getElementById('doctor');
+        const dateInput = document.getElementById('date');
+        const timeSelect = document.getElementById('time');
+
+        // Event listener for changes in doctor selection or date input
+        doctorSelect.addEventListener('change', updateAvailableTimeSlots);
+        dateInput.addEventListener('change', updateAvailableTimeSlots);
+
+        // Function to update available time slots based on selected doctor and date
+        function updateAvailableTimeSlots() {
+            const selectedDoctor = doctorSelect.value;
+            const selectedDate = dateInput.value;
+
+            if (selectedDoctor && selectedDate) {
+                fetch(`get_time_slots.php?doctor_id=${selectedDoctor}&date=${selectedDate}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Clear previous options
+                        timeSelect.innerHTML = '<option value="" disabled selected>Select a time slot</option>';
+                        if (data.length > 0) {
+                            data.forEach(slot => {
+                                const option = document.createElement('option');
+                                option.textContent = slot;
+                                option.value = slot;
+                                timeSelect.appendChild(option);
+                            });
+                        } else {
+                            timeSelect.innerHTML = '<option value="" disabled>No available time slots</option>';
+                        }
+                   

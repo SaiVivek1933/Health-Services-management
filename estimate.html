@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cost Estimation Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #333;
+        }
+        .service {
+            margin-bottom: 10px;
+        }
+        .total-cost {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        .additional-expenses {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hospital Fee Estimator</h1>
+    <form id="estimationForm">
+        <h2>Select Hospital</h2>
+        <div>
+            <label for="hospitalSelect">Choose a Hospital:</label>
+            <select id="hospitalSelect">
+                <option value="hospitalA">Hospital A</option>
+                <option value="hospitalB">Hospital B</option>
+                <option value="hospitalC">Hospital C</option>
+            </select>
+        </div>
+
+        <h2>Medical Services</h2>
+        <div class="service">
+            <input type="checkbox" name="services" value="600" id="consultation">
+            <label for="consultation">Consultation (600)</label>
+        </div>
+        <div class="service">
+            <input type="checkbox" name="services" value="300" id="bloodTest">
+            <label for="bloodTest">Blood Test (300)</label>
+        </div>
+        <div class="service">
+            <input type="checkbox" name="services" value="500" id="xRay">
+            <label for="xRay">X-Ray (500)</label>
+        </div>
+        <div class="service">
+            <input type="checkbox" name="services" value="2000" id="mriScan">
+            <label for="mriScan">MRI Scan (2000)</label>
+        </div>
+        <div class="service">
+            <input type="checkbox" name="services" value="2000" id="ctScan">
+            <label for="ctScan">CT Scan (2000)</label>
+        </div>
+
+        <h2>Surgeries</h2>
+        <div class="service">
+            <input type="checkbox" name="services" value="5000" id="appendectomy">
+            <label for="appendectomy">Appendectomy (5000)</label>
+        </div>
+        <div class="service">
+            <input type="checkbox" name="services" value="8000" id="tonsillectomy">
+            <label for="tonsillectomy">Tonsillectomy (8000)</label>
+        </div>
+        <div class="service">
+            <input type="checkbox" name="services" value="10000" id="herniaRepair">
+            <label for="herniaRepair">Hernia Repair (10000)</label>
+        </div>
+        <div class="service">
+            <input type="checkbox" name="services" value="12000" id="kneeReplacement">
+            <label for="kneeReplacement">Knee Replacement (12000)</label>
+        </div>
+        <div class="service">
+            <input type="checkbox" name="services" value="15000" id="heartBypass">
+            <label for="heartBypass">Heart Bypass Surgery (15000)</label>
+        </div>
+        <div class="service">
+            <input type="checkbox" name="services" value="18000" id="hipReplacement">
+            <label for="hipReplacement">Hip Replacement (18000)</label>
+        </div>
+
+        <h2>Additional Expenses</h2>
+        <div class="service">
+            <input type="checkbox" name="services" value="1500" id="roomCharges">
+            <label for="roomCharges">Room Charges (1500)</label>
+        </div>
+        <div class="service">
+            <input type="checkbox" name="services" value="2500" id="surgeryCost">
+            <label for="surgeryCost">Surgery Cost (2500)</label>
+        </div>
+
+        <br>
+        <button type="button" onclick="estimateCost()">Estimate Cost</button>
+    </form>
+
+    <div class="total-cost" id="totalCost">
+        Total Estimated Cost: 0
+    </div>
+
+    <script>
+        function estimateCost() {
+            const form = document.getElementById('estimationForm');
+            const hospitalSelect = document.getElementById('hospitalSelect');
+            const hospital = hospitalSelect.value;
+
+            // Define base costs for hospitals
+            let baseCost = 0;
+            switch (hospital) {
+                case 'hospitalA':
+                    baseCost = 5000; // Example base cost for Hospital A
+                    break;
+                case 'hospitalB':
+                    baseCost = 6000; // Example base cost for Hospital B
+                    break;
+                case 'hospitalC':
+                    baseCost = 7000; // Example base cost for Hospital C
+                    break;
+                default:
+                    baseCost = 5000; // Default base cost
+                    break;
+            }
+
+            const checkboxes = form.querySelectorAll('input[name="services"]:checked');
+            let totalCost = baseCost;
+
+            checkboxes.forEach((checkbox) => {
+                totalCost += parseFloat(checkbox.value);
+            });
+
+            document.getElementById('totalCost').textContent = 'Total Estimated Cost: ' + totalCost.toFixed(2);
+        }
+    </script>
+</body>
+</html>
